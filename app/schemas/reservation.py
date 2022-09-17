@@ -10,7 +10,7 @@ class ReservationBase(BaseModel):
 
 
 class ReservationUpdate(ReservationBase):
-    
+
     @validator('from_reserve')
     def check_from_reserve_later_than_now(cls, value):
         if value <= datetime.now():

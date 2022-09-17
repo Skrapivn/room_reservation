@@ -13,8 +13,8 @@ class CRUDMeetingRoom(CRUDBase):
 
     # Преобразуем функцию в метод класса.
     async def get_room_id_by_name(
-            # Дописываем параметр self. 
-            # В качестве альтернативы здесь можно 
+            # Дописываем параметр self.
+            # В качестве альтернативы здесь можно
             # применить декоратор @staticmethod.
             self,
             room_name: str,

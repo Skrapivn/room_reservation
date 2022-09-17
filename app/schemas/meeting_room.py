@@ -10,8 +10,9 @@ class MeetingRoomBase(BaseModel):
 
 class MeetingRoomCreate(MeetingRoomBase):
     name: str = Field(
-    ..., min_length=1, max_length=100,
-    title='Название переговорки', description='Укажите название переговорной комнаты'
+        ..., min_length=1, max_length=100,
+        title='Название переговорки',
+        description='Укажите название переговорной комнаты'
     )
 
     class Config:
@@ -32,7 +33,7 @@ class MeetingRoomUpdate(MeetingRoomBase):
     def name_cannot_be_null(cls, value):
         if value is None:
             raise ValueError('Имя переговорки не может быть пустым!')
-        return value       
+        return value
 
 
 class MeetingRoomDB(MeetingRoomCreate):

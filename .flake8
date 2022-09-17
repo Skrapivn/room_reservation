@@ -1,0 +1,10 @@
+[flake8]
+paths = 
+    ./app
+max-complexity = 10
+max-line-length = 79
+exclude =
+    tests/
+    venv/
+    alembic/
+  __init__.py

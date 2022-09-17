@@ -22,7 +22,6 @@ router = APIRouter(
 )
 async def create_new_meeting_room(
         meeting_room: MeetingRoomCreate,
-        # Указываем зависимость, предоставляющую объект сессии, как параметр функции.
         session: AsyncSession = Depends(get_async_session),
 ):
     # Выносим проверку дубликата имени в отдельную корутину.
