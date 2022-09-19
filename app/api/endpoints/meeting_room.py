@@ -38,11 +38,6 @@ async def get_all_meeting_rooms(
         session: AsyncSession = Depends(get_async_session),
 ):
     all_rooms = await meeting_room_crud.get_multi(session)
-    if all_rooms is None:
-        raise HTTPException(
-            status_code=404,
-            detail='Переговорок нет в БД',
-        )
     return all_rooms
 
 
