@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -85,6 +85,7 @@ async def remove_meeting_room(
     meeting_room = await meeting_room_crud.remove(meeting_room, session)
     return meeting_room
 
+
 @router.get(
     '/{meeting_room_id}/reservations',
     response_model=list[ReservationDB]
@@ -97,4 +98,4 @@ async def get_reservations_for_room(
     reservations = await reservation_crud.get_future_reservations_for_room(
         room_id=meeting_room_id, session=session
     )
-    return reservations 
+    return reservations

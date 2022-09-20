@@ -51,7 +51,7 @@ class CRUDReservation(CRUDBase):
             )
         )
         reservations = reservations.scalars().all()
-        return reservations 
+        return reservations
 
 
 reservation_crud = CRUDReservation(Reservation)

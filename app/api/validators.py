@@ -44,10 +44,10 @@ async def check_reservation_intersections(**kwargs) -> None:
 
 async def check_reservation_before_edit(
         reservation_id: int,
-        session: AsyncSession, 
+        session: AsyncSession,
 ) -> Reservation:
     reservation = await reservation_crud.get(
-        obj_id=reservation_id, session=session 
+        obj_id=reservation_id, session=session
     )
     if not reservation:
         raise HTTPException(status_code=404, detail='Бронь не найдена!')
