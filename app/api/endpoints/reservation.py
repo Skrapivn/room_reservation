@@ -1,5 +1,4 @@
-# app/api/endpoints/reservaion.py
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.api.validators import (
@@ -9,7 +8,9 @@ from app.api.validators import (
 )
 from app.core.db import get_async_session
 from app.crud.reservation import reservation_crud
-from app.schemas.reservation import ReservationCreate, ReservationDB
+from app.schemas.reservation import (
+    ReservationCreate, ReservationDB, ReservationUpdate
+)
 
 router = APIRouter()
 
@@ -52,4 +53,33 @@ async def delete_reservation(
     reservation = await reservation_crud.remove(
         reservation, session
     )
-    return reservation 
+    return reservation
+
+
+@router.patch('/{reservation_id}', response_model=ReservationDB)
+async def update_reservation(
+        reservation_id: int,
+        obj_in: ReservationUpdate,
+        session: AsyncSession = Depends(get_async_session),
+):
+    # Проверяем, что такой объект бронирования вообще существует.
+    reservation = await check_reservation_before_edit(
+        reservation_id, session
+    )
+    # Проверяем, что нет пересечений с другими бронированиями.
+    await check_reservation_intersections(
+        # Новое время бронирования, распакованное на ключевые аргументы.
+        **obj_in.dict(),
+        # id обновляемого объекта бронирования,
+        reservation_id=reservation_id,
+        # id переговорки.
+        meetingroom_id=reservation.meetingroom_id,
+        session=session
+    )
+    reservation = await reservation_crud.update(
+        db_obj=reservation,
+        # На обновление передаем объект класса ReservationUpdate, как и требуется.
+        obj_in=obj_in,
+        session=session,
+    )
+    return reservation
