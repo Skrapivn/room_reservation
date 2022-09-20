@@ -1,5 +1,5 @@
-# app/schemas/reservation.py
 from datetime import datetime, timedelta
+from typing import Optional
 
 from pydantic import BaseModel, Extra, Field, root_validator, validator
 
@@ -47,14 +47,10 @@ class ReservationCreate(ReservationUpdate):
     meetingroom_id: int
 
 
-# Класс ReservationDB нельзя наследовать от ReservationCreate:
-# тогда унаследуется и валидатор check_from_reserve_later_than_now,
-# и при получении старых объектов из БД он будет выдавать ошибку валидации:
-# ведь их from_time вполне может быть меньше текущего времени.
-
 class ReservationDB(ReservationBase):
     id: int
     meetingroom_id: int
+    user_id: Optional[int]
 
     class Config:
         orm_mode = True

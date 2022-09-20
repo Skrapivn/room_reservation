@@ -7,7 +7,9 @@ from app.api.validators import (
     check_reservation_intersections,
 )
 from app.core.db import get_async_session
+from app.core.user import current_user
 from app.crud.reservation import reservation_crud
+from app.models import User
 from app.schemas.reservation import (
     ReservationCreate, ReservationDB, ReservationUpdate
 )
@@ -19,6 +21,7 @@ router = APIRouter()
 async def create_reservation(
         reservation: ReservationCreate,
         session: AsyncSession = Depends(get_async_session),
+        user: User = Depends(current_user),
 ):
     await check_meeting_room_exists(
         reservation.meetingroom_id, session
@@ -29,7 +32,7 @@ async def create_reservation(
         **reservation.dict(), session=session
     )
     new_reservation = await reservation_crud.create(
-        reservation, session
+        reservation, session, user
     )
     return new_reservation
 
@@ -78,7 +81,6 @@ async def update_reservation(
     )
     reservation = await reservation_crud.update(
         db_obj=reservation,
-        # На обновление передаем объект класса ReservationUpdate, как и требуется.
         obj_in=obj_in,
         session=session,
     )
