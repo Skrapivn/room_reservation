@@ -38,7 +38,6 @@ class CRUDReservation(CRUDBase):
         reservations = await session.execute(select_stmt)
         return reservations.scalars().all()
 
-
     async def get_future_reservations_for_room(
             self,
             room_id: int,
@@ -51,7 +50,6 @@ class CRUDReservation(CRUDBase):
             )
         )
         return reservations.scalars().all()
-
 
     async def get_by_user(
             self,
