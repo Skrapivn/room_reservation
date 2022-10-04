@@ -22,7 +22,7 @@ async def create_reservation(
         reservation: ReservationCreate,
         session: AsyncSession = Depends(get_async_session),
         user: User = Depends(current_user),
-    ):
+):
     await check_meeting_room_exists(
         reservation.meetingroom_id, session
     )
@@ -44,7 +44,7 @@ async def create_reservation(
 )
 async def get_all_reservations(
         session: AsyncSession = Depends(get_async_session),
-    ):
+):
     """Только для суперюзеров."""
     all_reservation = await reservation_crud.get_multi(session)
     return all_reservation
@@ -58,7 +58,7 @@ async def get_all_reservations(
 async def get_my_reservations(
         session: AsyncSession = Depends(get_async_session),
         user: User = Depends(current_user)
-    ):
+):
     """Получает список всех бронирований для текущего пользователя."""
     user_reservation = await reservation_crud.get_by_user(
         session=session, user=user
@@ -71,7 +71,7 @@ async def delete_reservation(
         reservation_id: int,
         session: AsyncSession = Depends(get_async_session),
         user: User = Depends(current_user),
-    ):
+):
     """Для суперюзеров или создателей объекта бронирования."""
     reservation = await check_reservation_before_edit(
         reservation_id, session, user
@@ -88,7 +88,7 @@ async def update_reservation(
         obj_in: ReservationUpdate,
         session: AsyncSession = Depends(get_async_session),
         user: User = Depends(current_user),
-    ):
+):
     """Для суперюзеров или создателей объекта бронирования."""
     reservation = await check_reservation_before_edit(
         reservation_id, session, user

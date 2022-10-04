@@ -24,7 +24,7 @@ router = APIRouter()
 async def create_new_meeting_room(
         meeting_room: MeetingRoomCreate,
         session: AsyncSession = Depends(get_async_session),
-    ):
+):
     """Только для суперюзеров."""
     await check_name_duplicate(meeting_room.name, session)
     new_room = await meeting_room_crud.create(meeting_room, session)
@@ -38,7 +38,7 @@ async def create_new_meeting_room(
 )
 async def get_all_meeting_rooms(
         session: AsyncSession = Depends(get_async_session),
-    ):
+):
     all_rooms = await meeting_room_crud.get_multi(session)
     return all_rooms
 
@@ -54,7 +54,7 @@ async def partially_update_meeting_room(
         # JSON-данные, отправленные пользователем.
         obj_in: MeetingRoomUpdate,
         session: AsyncSession = Depends(get_async_session),
-    ):
+):
     """Только для суперюзеров."""
     meeting_room = await check_meeting_room_exists(
         meeting_room_id, session
@@ -78,7 +78,7 @@ async def partially_update_meeting_room(
 async def remove_meeting_room(
         meeting_room_id: int,
         session: AsyncSession = Depends(get_async_session),
-    ):
+):
     """Только для суперюзеров."""
     meeting_room = await check_meeting_room_exists(
         meeting_room_id, session
